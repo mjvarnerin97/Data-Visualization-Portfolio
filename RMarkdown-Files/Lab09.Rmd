@@ -1,0 +1,47 @@
+---
+title: "Lab 09"
+author: "Michael Varnerin"
+date: "December 3, 2017"
+output: html_document
+---
+
+#Data Management
+```{r data_management}
+crime<- read.csv("CrimeStatebyState.csv")
+library(tidyverse)
+library(forcats)
+library(GGally)
+
+crime_2013 <- filter(crime, Year==2013)
+
+northeast_states<- c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennsylvania")
+midwest_states <- c("Illinois", "Indiana", "Michigan", "Ohio", "Wisconsin", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota")
+south_states <- c("Delaware", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "Virginia", "District of Columbia", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas")
+west_states <- c("Arizona", "Colorado", "Idaho", "Montana", "Nevada", "New Mexico", "Utah", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington")
+US_Overall <- "United States-Total"
+
+crime_2013 <- mutate(crime_2013, region=ifelse(State %in% northeast_states, "Northeast",
+                                                 ifelse(State %in% midwest_states, "Midwest",
+                                                        ifelse(State %in% south_states, "South",
+                                                               ifelse(State %in% west_states, "West",
+                                                                      ifelse(State %in% US_Overall, "US Overall", "NA"))))))
+
+crime_2013$Population <- as.character(crime_2013$Population)
+crime_2013 <- mutate_if(crime_2013, is.numeric, scale)
+crime_2013$Population <- as.numeric(crime_2013$Population)
+```
+
+#Parallel Coordinate Chart
+```{r graph}
+ggparcoord(data = crime_2013, columns = c(19, 21, 22, 23, 15, 16, 18), groupColumn = 24)+
+  coord_flip()+
+  geom_point(aes(fill = region, size = Population), color = "black", shape = 21)+
+  scale_x_discrete(labels = c("Aggravated Assault", "Burglary", "Larceny Theft", "Motor Vehicle Theft", "Murder and Non-Negligent Manslaughter", "Rape", "Robbery"))+
+  scale_y_continuous(breaks = NULL)+
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.y = element_blank())
+```
+
+The above graph could be improved with better scaling for the different crime categories. The command used (ggparcoord) automatically scaled hte population variable, which skewed the population values as demonstrated in the above chart. Creating a parallel coordinate chart without the ggparcoord command would allow for proper scaling of each crime categorie based on real population values.

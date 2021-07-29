@@ -1,0 +1,55 @@
+---
+title: "Lab 01"
+author: "Michael Varnerin"
+date: "September 7, 2017"
+output: html_document
+---
+
+# Introduction
+
+In this lab, we will attempt to provide an answer to the question, "Do regular users of marijuana have a different level of self-reported health than people never using marijuana?"
+
+# Data
+
+To address this question, we will use the data from the 2014 National Survey on Drug Use and Health, which is conducted annually by the Substance Abuse and Mental Health Services Administration (SAMHSA), an agency in the U.S. Department of Health and Human Services (DHHS). More information about this data can be found at [this link](http://www.icpsr.umich.edu/icpsrweb/ICPSR/series/64).
+
+# Data Management
+
+```{r data_load}
+load("36361-0001-Data.rda") #load data
+full_data <- da36361.0001 #rename data
+remove(da36361.0001) #remove old data
+```
+
+Here, we loaded the dataset and renamed it to an object to facilitate incorporating it into our graph.
+
+```{r}
+library(tidyverse)
+
+regular_use_criteria <- 30
+
+regular_users <- filter(.data = full_data, MJDAY30A >= regular_use_criteria)
+
+never_users <- filter(.data = full_data, MJEVER == "(2) No")
+```
+
+We defined regular users as those who used marijuana at least `r regular_use_criteria` days out of the past 30. We then filtered the data in order to isolate the data for regular users of marijuana and never users of marijuana. This allows us to create a stacked bar graph of each group for comparison.
+
+# Graph Creation
+
+```{r}
+ggplot(regular_users)+
+  geom_bar(aes(x = 0, fill = HEALTH, y = ..count../sum(..count..)))+
+  geom_bar(data = never_users, aes(x = 1, fill = HEALTH, y = ..count../sum(..count..)))+
+  scale_fill_brewer(palette = "RdYlGn", direction = -1)+
+  scale_x_continuous(breaks = c(0,1), labels = c("Regular Users", "Never Users"))+
+  labs(title = "Self Reported Health Status", x = "User Category", y = "Relative Frequency")
+```
+
+To effectively visualize the differences in self-reported health between regular users of marijuana and never users of marijuana, we created a stacked bar graph for regular users and never users of marijuana. This allowed for easier side-by-side comparison between the two groups.
+
+The graph was created by creating two geometric objects: one utilizing the regular users data set and one using the never users dataset. These would go on to become the bars seen in the graph above. Then, in order to compare the two groups more effectively, we set the y-axis to be the relative frequency. To do this, we divided the counts for each group by the sum of the counts. This way, we are able to compare the two groups using concrete percentages.
+
+# Results
+
+Upon looking at the data, people who never reported using marijuana reported that they were in excellent health around two times more than people who reported that they regularly used marijuana, with a little over 25% of never users reporting excellent health compared to around only 12% of regular users reporting excellent health. Furthermore, it can be seen that around 90% of people who reported that they never used marijuana reported that they were either in Good health or better, as compared to the 87% or so of people that reported that they regularly used marijuana. 

@@ -1,0 +1,291 @@
+---
+title: "Lab 03"
+author: "Paul Selling, Michael Varnerin, and Madeline Perez"
+date: "9/29/2017"
+output: html_document
+---
+
+#Introduction
+The goal of this project was to compose a detailed profile of users of alcohol.
+
+#Data Description
+We used data from the 2014 National Survey on Drug Use and Health.  The Substance Abuse and Mental Health Services Administration (SAMHSA) conducts this survery once a year.  Through scientific random sampling, participants of the survey are drawn from the general United States civilian population of ages 12 & older.  Our work drew primarily upon the data concerned with alcohol use, education, job status, and race.   Complete information about this data can be accessed through [this link](http://www.icpsr.umich.edu/icpsrweb/ICPSR/series/64).
+
+
+#Current, Regular Users
+We define current users as those who have consumed alcohol at least one time in the past 30 days.  We define regular users as those who have at least one alcoholic drink every week.  Finally, current, regular users are people who have consumed alcohol in the past 30 days and who have at least 1 drink per week.  
+
+#Visualizations
+```{r data_libraries}
+load("36361-0001-Data.rda")
+library(tidyverse)
+library(forcats)
+library(gridExtra)
+```
+
+```{r code}
+#relabeling ALCEVER
+da36361.0001 <- mutate(da36361.0001, ALCEVER = fct_recode(ALCEVER,
+                                                          "Yes" = "(1) Yes",
+                                                          "No" = "(2) No"))
+#creating smaller dataset with those who have ever used alcohol
+ever_drink_data <- filter(da36361.0001, ALCEVER == "Yes")
+
+#Consolidating and/or renaming values
+ever_drink_data <- mutate(ever_drink_data, ALCREC = fct_recode(ALCREC,
+                                                               "Within past 30 days" = "(01) Within the past 30 days",
+                                                               "More than 30 days ago but within past year" = "(02) More than 30 days ago but within the past 12 mos",
+                                                               "Used at some point in last year" = "(08) Used at some point in the past 12 mos LOG ASSN",
+                                                               "More than a year ago" = "(03) More than 12 months ago",
+                                                               "Used a some point in lifetime" = "(09) Used at some point in the lifetime LOG ASSN",
+                                                               "Within past 30 days" = "(11) Used in the past 30 days LOGICALLY ASSIGNED"
+                                                               ))
+
+#Defining Current vs. Non-Current Users
+da36361.0001 <- mutate(da36361.0001, current_user = !is.na(ALCDAYS))
+
+#Defining Regular vs. Non-Regular Users
+da36361.0001 <- mutate(da36361.0001, regular_user = !is.na(ALDAYPWK))
+
+#Defining Current and Regular Users
+da36361.0001 <- mutate(da36361.0001, current_and_regular_user = !is.na(ALDAYPWK) & ALCDAYS >= 1)
+da36361.0001 <- mutate(da36361.0001, current_and_regular_user = ifelse(is.na(current_and_regular_user), F, current_and_regular_user))
+
+#Defining Current and Non-Regular Users
+da36361.0001 <- mutate(da36361.0001, current_and_non_regular_user = is.na(ALDAYPWK) & ALCDAYS >= 1)
+da36361.0001 <- mutate(da36361.0001, current_and_non_regular_user = ifelse(is.na(current_and_non_regular_user), F, current_and_non_regular_user))
+
+#Defining Former Users
+da36361.0001 <- mutate(da36361.0001, former_user = ALCEVER == "Yes" & is.na(ALDAYPWK) & is.na(ALCDAYS))
+da36361.0001 <- mutate(da36361.0001, former_user = ifelse(is.na(former_user), F, former_user))
+
+#Defining Non-Users
+da36361.0001 <- mutate(da36361.0001, non_user = ALCEVER == "No")
+da36361.0001 <- mutate(da36361.0001, non_user = ifelse(is.na(non_user), F, non_user))
+
+#Categorizing User Status
+da36361.0001 <- mutate(da36361.0001, user_status = ifelse(non_user,"Non-User", ifelse(current_and_non_regular_user, "Current and Non-Regular User",ifelse(current_and_regular_user,"Current and Regular User",ifelse(former_user,"Former User", "Uncategorized")))))
+
+#Releveling User Status
+da36361.0001 <- mutate(da36361.0001, user_status = fct_relevel(user_status,
+                                                    "Current and Regular User", "Current and Non-Regular User", "Former User", "Non-User", "Uncategorized"))
+
+#Removing Underage Participants from Data
+old_data <- filter(da36361.0001, CATAG7 %in% c("(4) 18-20 Years Old", "(5) 21-25 Years Old","(6) 26-34 Years Old", "(7) 35 or Older"))
+
+#Releveling User Status for Filtered Data Set
+old_data <- mutate(old_data, user_status = fct_relevel(user_status,
+                                                    "Current and Regular User", "Current and Non-Regular User", "Former User", "Non-User", "Uncategorized"))
+
+regular_user_data <- filter(da36361.0001, current_and_regular_user)
+regular_user_data$ALDAYPWK <- as.character(regular_user_data$ALDAYPWK)
+
+
+regular_user_data <- mutate(regular_user_data, ALDAYPWK = fct_recode(ALDAYPWK,
+                                                                     "Once per week" = "1",
+                                                                     "Twice per week" = "2",
+                                                                     "Three times per week" = "3",
+                                                                     "Four times per week" = "4",
+                                                                     "Five times per week" = "5",
+                                                                     "Six times per week" = "6",
+                                                                     "Seven times per week" = "7"))
+
+```
+
+
+Graph 1:
+``` {r d_age_of_try}
+#Filtering down to observations that can be evaluated 
+age_of_use_data_2 <- filter(da36361.0001, !is.na(da36361.0001$ALCTRY))
+
+#Defining Early, Neither Early Nor Late, and Late Users
+age_of_use_data_2 <- mutate(age_of_use_data_2, stage = ifelse(ALCTRY < 16, "Early",ifelse(ALCTRY >= 21, "Late","Neither Early nor Late")))
+
+#Turn ALCTRY into character variable
+age_of_use_data_2$ALCTRY <- as.character(age_of_use_data_2$ALCTRY)
+
+#Sort ALCTRY into categories
+age_of_use_data_2 <- mutate(age_of_use_data_2, ALCTRY = fct_recode(ALCTRY,
+                                                               "10 or younger" = "1",
+                                                               "10 or younger" = "2",
+                                                               "10 or younger" = "3",
+                                                               "10 or younger" = "4",
+                                                               "10 or younger" = "5",
+                                                               "10 or younger" = "6",
+                                                               "10 or younger" = "7",
+                                                               "10 or younger" = "8",
+                                                               "10 or younger" = "9",
+                                                               "10 or younger" = "10",
+                                                               "11-12" = "11",
+                                                               "11-12" = "12",
+                                                               "13-14" = "13",
+                                                               "13-14" = "14",
+                                                               "16" = "16",
+                                                               "17" = "17",
+                                                               "18" = "18",
+                                                               "19" = "19",
+                                                               "20" = "20",
+                                                               "21-30" = "21",
+                                                               "21-30" = "22",
+                                                               "21-30" = "23",
+                                                               "21-30" = "24",
+                                                               "21-30" = "25",
+                                                               "21-30" = "26",
+                                                               "21-30" = "27",
+                                                               "21-30" = "28",
+                                                               "21-30" = "29",
+                                                               "21-30" = "30",
+                                                               "31-50" = "31",
+                                                               "31-50" = "32",
+                                                               "31-50" = "33",
+                                                               "31-50" = "34",
+                                                               "31-50" = "35",
+                                                               "31-50" = "36",
+                                                               "31-50" = "37",
+                                                               "31-50" = "38",
+                                                               "31-50" = "39",
+                                                               "31-50" = "40",
+                                                               "31-50" = "41",
+                                                               "31-50" = "42",
+                                                               "31-50" = "43",
+                                                               "31-50" = "44",
+                                                               "31-50" = "45",
+                                                               "31-50" = "46",
+                                                               "31-50" = "47",
+                                                               "31-50" = "48",
+                                                               "31-50" = "49",
+                                                               "31-50" = "50",
+                                                               "51-69" = "51",
+                                                               "51-69" = "52",
+                                                               "51-69" = "53",
+                                                               "51-69" = "54",
+                                                               "51-69" = "55",
+                                                               "51-69" = "56",
+                                                               "51-69" = "57",
+                                                               "51-69" = "58",
+                                                               "51-69" = "59",
+                                                               "51-69" = "60",
+                                                               "51-69" = "61",
+                                                               "51-69" = "62",
+                                                               "51-69" = "63",
+                                                               "51-69" = "64",
+                                                               "51-69" = "65",
+                                                               "51-69" = "66",
+                                                               "51-69" = "67",
+                                                               "51-69" = "68",
+                                                               "51-69" = "69",
+                                                               "70+" = "70"))
+
+#Releveling Age of Use Data
+age_of_use_data_2 <- mutate(age_of_use_data_2, stage = fct_relevel(stage,
+                                                            "Early", "Neither Early nor Late", "Late"))
+
+#Creating the graph
+g1<-ggplot(age_of_use_data_2)+
+  geom_bar(aes(x=stage, y=..count../sum(..count..), fill=ALCTRY))+
+  scale_fill_discrete(name="Age Of First Drink")+
+  labs(x = "Stage", y="Share",title="First Use of Alcohol by Age Groupings \nAmong Those who Began Drinking Early and Late")
+```
+
+Graph 2:
+``` {r d_educ_polar}
+da36361.0001 <- mutate(da36361.0001, EDUCCAT2 = fct_recode(EDUCCAT2,
+                                                           "Less than high school" = "(1) Less than high school (IREDUC2<=7 and AGE2>=7)",
+                                                           "High school graduate" = "(2) High school graduate (IREDUC2=8 and AGE2>=7)",
+                                                           "Some college" = "(3) Some college (IREDUC2=9-10 and AGE2>=7)",
+                                                           "College graduate" = "(4) College graduate (IREDUC2=11 and AGE2>=7)",
+                                                           "12-17 years old" = "(5) 12 to 17 year olds (AGE2<=6)"))
+
+da36361.0001 <- mutate(da36361.0001, EDUCCAT2 = fct_relevel(EDUCCAT2,
+                                                            "College graduate", "Some college", "High school graduate", "Less than high school", "12-17 years old"))
+
+da36361.0001 <- mutate(da36361.0001, educ_user_category = ifelse(EDUCCAT2== "Less than high school" & current_and_regular_user == T, "Less than high school,\n Regular user",
+                                                                 ifelse(EDUCCAT2== "Less than high school" & current_and_non_regular_user == T,"Less than high school,\n non-regular user", 
+                                                                        ifelse(EDUCCAT2== "High school graduate" & current_and_regular_user == T, "High school graduate,\n regular user",
+                                                                               ifelse(EDUCCAT2== "High school graduate" & current_and_non_regular_user == T, "High school graduate,\n non-regular user",
+                                                                                      ifelse(EDUCCAT2== "Some college" & current_and_regular_user == T, "Some college,\n regular user",
+                                                                                             ifelse(EDUCCAT2== "Some college" & current_and_non_regular_user == T, "Some college,\n non-regular user",
+                                                                                                    ifelse(EDUCCAT2== "College graduate" & current_and_regular_user == T, "College graduate,\n regular user",
+                                                                                                           ifelse(EDUCCAT2== "College graduate" & current_and_non_regular_user == T, "College graduate,\n non-regular user",
+                                                                                                                  ifelse(EDUCCAT2== "12-17 years old" & current_and_regular_user == T, "12-17 years old,\n regular user",
+                                                                                                                         ifelse(EDUCCAT2== "12-17 years old" & current_and_non_regular_user == T, "12-17 years old,\n non-regular user",NA)))))))))))
+
+graph_data <- filter(da36361.0001, educ_user_category != "")
+
+g2<-ggplot(graph_data)+
+  geom_bar(aes(x=educ_user_category,
+               fill=EDUCCAT2,
+               y=..count../sum(..count..)),
+               color="black",
+           width=1)+
+  coord_polar()+
+  scale_y_sqrt()+ 
+  scale_fill_discrete(name="Education level")+
+  ggtitle("Share of Regular and Non-Regular Users \nby Education Level")+
+  labs(x="",y="")
+```
+
+Graph 3:
+```{r d_job_independent}
+#Redefine Categories based on Job Status
+old_data <- mutate(old_data, JBSTATR2 = fct_recode(JBSTATR2,
+                                                   "Working" = "(01) Worked at full-time job, past week",
+                                                   "Working" = "(02) Worked at part time job, past week",
+                                                   "Working" = "(03) Has job or volunteer worker, did not work past wk",
+                                                   "Unemployed/Laid Off" = "(04) Unemployed/on layoff, looking for work",
+                                                   "Disabled" = "(05) Disabled",
+                                                   "Not in Workforce" = "(06) Keeping house full-time",
+                                                   "Not in Workforce" = "(07) In school/training",
+                                                   "Not in Workforce" = "(08) Retired",
+                                                   "Not in Workforce" = "(09) Does not have a job, some other reason",
+                                                   "Uncategorized" = "(10) MISSING",
+                                                   "Uncategorized" = "(11) LEGITIMATE SKIP"))
+
+#Relevel Job Status
+old_data <- mutate(old_data, JBSTATR2 = fct_relevel(JBSTATR2,
+                                                    "Not in Workforce", "Disabled", "Unemployed/Laid Off", "Working"))
+
+#Create the Plot
+g3<-ggplot(filter(old_data,JBSTATR2 != "Uncategorized", !is.na(user_status)))+
+  geom_bar(aes(x=JBSTATR2,fill=user_status), position="fill")+
+  labs(x="Job Status", y = "Frequency", title="Comparison of Alcohol User Status by Job Status")+
+  scale_fill_discrete(name = "User Status")+
+  coord_flip()
+```
+
+
+Graph 4:
+``` {r d_race_dependent}
+NEWRACE2<-factor(c("(1) NonHisp White", "(2) NonHisp Black/Afr Am", "(3) NonHisp Native Am/AK Native", "(4) NonHisp Native HI/Other Pac Isl", "(5) NonHisp Asian", "(6) NonHisp more than one race", "(7) Hispanic"))
+
+da36361.0001 <- mutate(da36361.0001, NEWRACE2 = fct_recode(NEWRACE2,
+                                                           "White" = "(1) NonHisp White",
+                                                           "Black" = "(2) NonHisp Black/Afr Am",
+                                                           "Native American" = "(3) NonHisp Native Am/AK Native",
+                                                           "Pacific Islander" = "(4) NonHisp Native HI/Other Pac Isl",
+                                                           "Asian" = "(5) NonHisp Asian",
+                                                           ">1 Race" = "(6) NonHisp more than one race",
+                                                           "Hispanic"="(7) Hispanic"))
+
+g4<-ggplot(filter(da36361.0001, !is.na(user_status)))+
+  geom_bar(aes(x=NEWRACE2,fill=user_status), position="fill")+
+  coord_flip()+
+  scale_fill_discrete(name="User Status")+
+  labs(x="Race",y="Share",title="Share of Type of User by Race")
+```
+
+```{r 2x2_Plot, fig.height=12, fig.width = 12}
+#arrange plots in a grid
+lay <- rbind(c(1,1,2,2),
+             c(1,1,2,2),
+             c(3,3,4,4),
+             c(3,3,4,4))
+             
+grid.arrange(g1,g2,g3,g4, layout_matrix = lay)
+```
+
+#Results
+  Our final display includes four visualizations that highlight various aspects about the user profile of alcohol users.  The upper-left stacked bar plot looks at the age at which a respondent had their first drink.  We defined "early" users as those who started drinking before the age of 16, "late" users as those who started drinking at age 21 or older, and "neither early nor late"" as those who first drank between the ages of 16 and 20. Nearly 40% of the survery population reported "early" use of alcohol.  Among early users, a vast majority first drank between the ages of 13 and 15.  It is important to note that the legal drinking age in the United States is 21.  Yet, less than 15% of the survey population started drinking "late".  Among late users, almost all respondents had their first drink between the ages of 21 and 30.  About 50% of the population first drank "neither early nor late", most of which reportedly occurred between the ages of 16 and 18.  
+  The polar graph displays the share of regular and non-regular users of alcohol by education level.  The interesting takeaway from this graph is that among people who were either 12-17 years old, received less than a high school level education, were high school graduates, or received some college education, there were more reported non-regular users (drank less than once a week), than regular users of alcohol.  However, amongst college graduates, there were slightly more regular users than non-regular users.  
+  The bottom-left stacked bar plot displays the frequency of each user status within the four different types of job status.  The population of working people has the highest proportion of "current and regular users" among the four groups.  Disabled respondents have the highest proportion of "former users".  And those not in the workforce just barely have the highest proportion of "non-users".   
+  Lastly, the bottom-right stacked bar plot displays the frequency of each user status within the seven different races reported by survey respondents.  It would appear that people who are Asian have the highest proportion of "non-users"", while people who are white have the highest proportion of "current and regular users".  For each race, except for white, over 25% of the population reports being a "non-user" of alcohol.  "Former users" account for nearly 25% of the population in each of the seven groups.  And no more than 25% of each group is comprised of "current and regular users".

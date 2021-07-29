@@ -1,0 +1,69 @@
+---
+title: "Lab 02"
+author: "Michael Varnerin"
+date: "September 14, 2017"
+output: html_document
+---
+
+## Graphs Depicting ERA Variation Over Time
+```{r data_entry, message = F}
+library(tidyverse)
+player_data <- read.csv("Master.csv")
+pitching_data <- read.csv("Pitching.csv")
+salary_data <- read.csv("Salaries.csv")
+inflation_index <- read.csv("inflation.csv")
+```
+
+Boxplot:
+```{r boxplot}
+class(pitching_data$yearID) #Begin Variable Class Correction
+pitching_data$yearID <- as.factor(pitching_data$yearID)
+class(pitching_data$yearID)
+ggplot(pitching_data)+geom_boxplot(aes(x = yearID, y = ERA), na.rm = T)
+```
+
+Summarizing ERA Data:
+```{r}
+summary_pitching <- summarize(group_by(pitching_data, yearID),
+                              Q1 = quantile(ERA,.25,na.rm = T),
+                              median = median(ERA, na.rm = T),
+                              Q3 = quantile(ERA, .75, na.rm = T),
+                              min=min(ERA, na.rm = T),
+                              max = max(ERA, na.rm = T))
+summary_pitching
+```
+
+ERA Line Graph, Unmodified:
+```{r lineplot}
+summary_pitching$yearID <- as.numeric(as.character(summary_pitching$yearID))
+ggplot(summary_pitching)+geom_line(aes(x = yearID, y = median))
+```
+
+ERA Line Graph, Modified:
+```{r lineplot_modified}
+ggplot(summary_pitching)+
+  geom_ribbon(aes(x = yearID, ymin = Q1, ymax = Q3), fill = "LightGreen")+
+  geom_line(aes(x = yearID, y = median), color = "DarkBlue")
+```
+
+Proportion of Pitchers With Low and High ERAs by Year:
+```{r proportion_graph}
+filtered_pitching_data <- filter(pitching_data, G >= 10)
+
+class(filtered_pitching_data$yearID)
+filtered_pitching_data$yearID <- as.numeric(as.character(filtered_pitching_data$yearID))
+class(filtered_pitching_data$yearID)
+
+summary_pitching_proportion <- summarize(group_by(filtered_pitching_data, yearID),
+                                         Three_or_lower = mean(ERA <= 3, na.rm = T),
+                                         Six_or_higher = mean(ERA >= 6, na.rm = T))
+
+ggplot(summary_pitching_proportion)+
+  geom_line(aes(x = yearID, y = Three_or_lower, color = "darkblue"))+
+  geom_line(aes(x = yearID, y = Six_or_higher, color = "red"))+
+  theme_classic()+
+  labs(x = "Year", y = "Proportion", title = "Proportion of Pitchers (pitching at least 10 games)\nWith Low and High ERAs by Year")+
+  scale_color_manual("ERA",
+                     values = c("darkblue","red"),
+                     labels = c("3 or Under","6 or Higher"))
+```

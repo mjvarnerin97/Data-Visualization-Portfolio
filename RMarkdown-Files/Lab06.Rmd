@@ -1,0 +1,69 @@
+---
+title: "Lab06"
+author: "Michael Varnerin"
+date: "December 1, 2017"
+output: html_document
+---
+
+#Data Management
+```{r data_management}
+library(tidyverse)
+
+diamonds.small <-  diamonds[sample(nrow(diamonds), 500), ]
+```
+
+#Plots
+```{r plots}
+#Standard Scatterplot
+ggplot(diamonds.small)+
+  geom_point(aes(x = carat, y = price))+
+  theme_classic()+
+  labs(title = "Price of Diamonds as a Result of Carat", x = "Carat", y = "Price")
+
+#Bubble Plot
+ggplot(diamonds.small)+
+  geom_count(aes(x = carat, y = price, size=..prop..),alpha=.5)+
+  theme_classic()+
+  labs(title = "Price of Diamonds as a Result of Carat", x = "Carat", y = "Price")
+  
+#Bubble Plot (Carat vs. Price, Color = Quality of Cut)
+ggplot(diamonds.small)+
+  geom_count(aes(x = carat, y = price, size=..prop../sum(..prop..), color = cut),alpha=.5)+
+  theme_classic()+
+  labs(title = "Price of Diamonds as a Result of Carat", x = "Carat", y = "Price")
+
+#Tile Plot
+ggplot(diamonds.small)+
+  geom_bin2d(aes(x = carat, y = price), bins = c(15,15))+
+  theme_classic()+
+  labs(title = "Price of Diamonds as a Result of Carat", x = "Carat", y = "Price")
+
+#Contour/Level Plot
+ggplot(diamonds.small)+
+  geom_density2d(aes(x = carat, y = price))+
+  scale_x_continuous(lim = c(0,3.50))+
+  scale_y_continuous(lim = c(0,18300))+
+  theme_classic()+
+  labs(title = "Price of Diamonds as a Result of Carat", x = "Carat", y = "Price")
+
+#Jittered Scatter Plot
+ggplot(diamonds.small)+
+  geom_jitter(aes(x = carat, y = price))+
+  geom_smooth(aes(x = carat, y = price), method = 'lm', formula = y~x, se = .95)+
+  theme_classic()+
+  labs(title = "Price of Diamonds as a Result of Carat", x = "Carat", y = "Price")
+
+#Jittered Scatter Plot with Cut as an Aesthetic
+ggplot(diamonds.small)+
+  geom_jitter(aes(x = carat, y = price, color = cut))+
+  geom_smooth(aes(x = carat, y = price, color = cut), method = 'lm', formula = y~x, se = .67)+
+  theme_classic()+
+  labs(title = "Price of Diamonds as a Result of Carat", x = "Carat", y = "Price")
+
+#Polynomial Regression Jittered Scatter Plot
+ggplot(diamonds.small)+
+  geom_jitter(aes(x = carat, y = price, color = cut))+
+  geom_smooth(aes(x = carat, y = price, color = cut), method = 'lm', formula = y~poly(x,2), se = .67)+
+  theme_classic()+
+  labs(title = "Price of Diamonds as a Result of Carat", x = "Carat", y = "Price")
+```

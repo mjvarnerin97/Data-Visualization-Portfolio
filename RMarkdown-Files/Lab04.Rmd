@@ -1,0 +1,137 @@
+---
+title: "Lab04"
+author: "Michael Varnerin and Navneet Vishwanathan"
+date: "October 12, 2017"
+output: html_document
+---
+```{r InitialCommands}
+library(tidyverse)
+library(forcats)
+
+dc_data_sum<- read.csv("DCMigration.csv")
+dc_data<-read.csv("DCMigration_full.csv")
+```
+
+##Visualization 1 -- Series of Stacked Bars
+```{r Visualization1}
+dc_data<-mutate(dc_data,
+                regMDVA=ifelse(residence=="Virginia","Virginia",
+                                  ifelse(residence=="Maryland","Maryland",
+                                        ifelse(region=="Midwest","Midwest",
+                                    ifelse(region=="Northeast","Northeast",
+                                          ifelse(region=="Other Southern States","Other Southern States",
+                                               ifelse(region=="Stayed in DC","Stayed in DC",
+                              ifelse(region=="West","West","Other"))))))))
+       
+ggplot(data=filter(dc_data, region != "Other"))+ geom_bar(aes(x= YEAR, y=..count../sum(..count..), fill= regMDVA), position="fill")+labs(x="Year", y="Relative Frequency", title="Regional Migration of DC Residents")+theme_classic()+scale_fill_discrete(name="Region")
+```
+
+## Visualization 2 -- Lineplot Showing Migration Patterns over Time
+
+```{r Visualization2}
+ggplot(data=filter(dc_data_sum), aes(x=YEAR))+
+  geom_line(aes(y=prop_stayed, color="Stayed in DC"))+
+  geom_line(aes(y=dc_data_sum$prop_south, color="Other States in South"))+
+  geom_line(aes(y=dc_data_sum$prop_west, color="West"))+
+  geom_line(aes(y=dc_data_sum$prop_midwest, color="Midwest"))+
+  geom_line(aes(y=dc_data_sum$prop_northeast, color="Northeast"))+
+  scale_color_manual(name="Region", values=c("Stayed in DC"="red", "Other States in South"="blue", "West"="green", "Midwest"="orange", "Northeast"="purple"))+
+  theme_classic()+
+  labs(title="Migration Out of DC", x="Year",y="Relative Frequency")
+
+```
+
+## Visualization 3 -- NYT Migration Graphic-style Stream
+
+```{r Visualization3}
+
+dc_data_sum <- select(dc_data_sum, YEAR, stayed=prop_stayed, west=prop_west, south=prop_south, midwest=prop_midwest, northeast=prop_northeast)
+
+dc_data_sum.gather<- gather(dc_data_sum, -YEAR, key=region, value=propMoved)
+
+eps<-.Machine$double.eps
+dc_data_sum.gather$low<-NA
+dc_data_sum.gather$high<-NA
+dc_data_sum.gather[dc_data_sum.gather$region=="south","low"]<-0
+dc_data_sum.gather[dc_data_sum.gather$region =="south", "high"]<-dc_data_sum$south-eps
+dc_data_sum.gather[dc_data_sum.gather$region=="northeast", "low"]<-dc_data_sum$south+eps
+dc_data_sum.gather[dc_data_sum.gather$region=="northeast","high"] <- dc_data_sum$south + dc_data_sum$northeast - eps
+dc_data_sum.gather[dc_data_sum.gather$region=="midwest","low"] <- dc_data_sum$south + dc_data_sum$northeast + eps
+dc_data_sum.gather[dc_data_sum.gather$region=="midwest","high"] <- dc_data_sum$south + dc_data_sum$northeast + dc_data_sum$midwest - eps
+dc_data_sum.gather[dc_data_sum.gather$region=="west","low"] <- dc_data_sum$south + dc_data_sum$northeast + dc_data_sum$midwest + eps
+dc_data_sum.gather[dc_data_sum.gather$region=="west","high"] <- dc_data_sum$south + dc_data_sum$northeast + dc_data_sum$midwest + dc_data_sum$west - eps
+dc_data_sum.gather[dc_data_sum.gather$region=="stayed","low"] <- dc_data_sum$south + dc_data_sum$northeast + dc_data_sum$midwest + dc_data_sum$west + eps
+dc_data_sum.gather[dc_data_sum.gather$region=="stayed","high"] <- dc_data_sum$south + dc_data_sum$northeast + dc_data_sum$midwest + dc_data_sum$west + dc_data_sum$stayed - eps
+
+dc_data_sum<-dc_data_sum.gather
+
+decade<- subset(dc_data_sum, YEAR %in% seq(1900, 2000, by=10))
+decade$mid <- (decade$low + decade$high)/2
+decade <- gather(decade, key=heightType, value=height, -c(YEAR,region,propMoved))
+decade$labelx <- decade$YEAR
+
+decade[decade$YEAR <= 1920,"labelx"] <- 1915
+decade[decade$YEAR >= 2000,"labelx"] <- 2000
+
+decade$labelEnd <- NA
+
+decade[decade$region == "south","labelEnd"] <- "% of people \n born in DC lived in other states in the South"
+decade[decade$region == "northeast","labelEnd"] <- "% of people \n born in DC lived in the Northeast"
+decade[decade$region == "midwest","labelEnd"] <- "% of people \n born in DC lived in the Midwest"
+decade[decade$region == "west","labelEnd"] <- "% of people born in DC \n lived in the West"
+decade[decade$region == "stayed","labelEnd"] <- "% of people \n born in DC lived in DC"
+
+ribbonHeights<-sort(decade[decade$heightType=="mid"&decade$YEAR==1950,]$height)
+
+DC1900 <- dc_data_sum[dc_data_sum$YEAR==1900 & dc_data_sum$region == "stayed",]
+DC1900height <- (DC1900$high+DC1900$low)/2
+
+DC2000 <- dc_data_sum[dc_data_sum$YEAR==2000 & dc_data_sum$region == "stayed",]
+DC2000height <- (DC2000$high+DC2000$low)/2
+
+West1900 <- dc_data_sum[dc_data_sum$YEAR==1900 & dc_data_sum$region == "west",]
+West1900height <- (West1900$high+West1900$low)/2
+
+West2000 <- dc_data_sum[dc_data_sum$YEAR==2000 & dc_data_sum$region == "west",]
+West2000height <- (West2000$high+West2000$low)/2
+
+Midwest1900 <- dc_data_sum[dc_data_sum$YEAR==1900 & dc_data_sum$region == "midwest",]
+Midwest1900height <- (Midwest1900$high+Midwest1900$low)/2
+
+Midwest2000 <- dc_data_sum[dc_data_sum$YEAR==2000 & dc_data_sum$region == "midwest",]
+Midwest2000height <- (Midwest2000$high+Midwest2000$low)/2
+
+Northeast1900<- dc_data_sum[dc_data_sum$YEAR==1900 & dc_data_sum$region == "northeast",]
+Northeast1900height<- (Northeast1900$high+Northeast1900$low)/2
+
+Northeast2000<- dc_data_sum[dc_data_sum$YEAR==2000 & dc_data_sum$region == "northeast",]
+Northeast2000height<- (Northeast2000$high+Northeast2000$low)/2
+
+South1900 <- dc_data_sum[dc_data_sum$YEAR==1900 & dc_data_sum$region == "south",]
+South1900height <- (South1900$high+South1900$low)/2
+
+South2000 <- dc_data_sum[dc_data_sum$YEAR==2000 & dc_data_sum$region == "south",]
+South2000height <- (South2000$high+South2000$low)/2
+
+ggplot(dc_data_sum,aes(YEAR)) +
+  geom_ribbon(aes(x=YEAR,ymin=low, ymax=high,group=region,fill=region),color="white")+
+  geom_segment(data=decade, aes(x=YEAR,xend=YEAR),y=0,yend=1, color="white", alpha=0.1)+
+  theme_classic()+
+  theme(axis.line.y=element_blank())+
+  scale_x_continuous(limits=c(1890,2025),breaks=seq(1900,2000,by=10),name="")+
+  scale_y_continuous(limits=c(0,1.01),name="")+theme(axis.ticks=element_blank(),axis.text.y=element_blank(),axis.line.x=element_blank())+
+  scale_fill_manual(name="Region",values=c("stayed"="lightgrey", "midwest"="dodgerblue", "northeast"="gold2", "south"="seagreen1", "west"="orchid1"),labels=c("Midwest","Northeast","South","Stayed in DC","West"))+
+  labs(title="Migration from Washington, D.C.")+
+  annotate(geom="text",x=rep(1950,5), y=ribbonHeights, label=c("South","Northeast","Midwest","West","Stayed in DC"))+
+  annotate(geom="text", x=1900, y=DC1900height,label=paste(round(DC1900$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=2000, y=DC2000height,label=paste(round(DC2000$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=1900, y=Midwest1900height,label=paste(round(Midwest1900$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=2000, y=Midwest2000height,label=paste(round(Midwest2000$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=1900, y=Northeast1900height,label=paste(round(Northeast1900$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=2000, y=Northeast2000height,label=paste(round(Northeast2000$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=1900, y=South1900height,label=paste(round(South1900$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=2000, y=South2000height,label=paste(round(South2000$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=1900, y=West1900height,label=paste(round(West1900$propMoved,2)*100,"%",sep=""))+
+  annotate(geom="text", x=2000, y=West2000height,label=paste(round(West2000$propMoved,2)*100,"%",sep=""))
+```
+

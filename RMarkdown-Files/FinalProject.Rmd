@@ -1,0 +1,230 @@
+---
+title: "Data Visualization and Graphics Final Project"
+author: "Michael Varnerin, Madeline Perez, and Tianhao Kong"
+date: "December 16th, 2017"
+output: html_document
+---
+
+#Abstract
+This project is aimed at addressing a few of the many questions related to one of the most pertinent problems in the world -- cancer.  Given cancer's deadly and still incurable nature, we attempt to explore and draw conclusions about various topics associated with cancer, such as incidence related to race, survivability, general susceptibility, and chances of recurrence after initial remission.  Among all races, the number of new cases of cancer per 100,000 people reported each year has declined since 1990.  However, incidences among races differs a lot.  Black/African American people have consistently had the most new cases per year, with White people with the second-most, while Asian and Pacific Island people have consistently had the fewest new cases per year.  In general, cancer survivability decreases each additional year following initial diagnosis, however the type of cancer one has greatly affects their chances for survival.  When looking at just breast cancer, the stage of the cancer at initial diagnosis dramatically impacts one's chance of survival, with near 100% survival if the cancer is found in Stage I, as opposed to less than 25% chances of survival if the cancer is found in Stage IV.    
+
+#Introduction
+June 28th, 2013 is a day that I will never forget. On that day, cancer impacted my family and I when my mother was diagnosed with breast cancer. The ensuing fight would be one that helped mold me into the person that I am today. Fortunately, we won that fight. Others, however, continue to fight against cancer daily.
+
+Cancer has long been known to be one of the deadliest conditions that humankind has ever had to face. The sheer number of different cancers has made treating it incredibly difficult. And while we certainly have made progress with some types of cancer, like with [breast cancer](https://knowridge.com/2017/10/u-s-breast-cancer-death-rates-dropped-39-between-1989-and-2015/), we still face a steep climb in treating all kinds of cancer. Researchers at the National Cancer Institute have recently found that thyroid cancer incidence and mortality [increased over the last four decades](https://dceg.cancer.gov/news-events/research-news-highlights/2017/thyroid-trends). 
+
+With these kinds of increases in different types of cancer, it is critical to continue to research possible cures. In order to effectively do that, however, it is just as important to know if cancer occurs more often in some demographics as compared to others. For example, does cancer tend to occur more among Whites or more among African-Americans? Could this possibly be related to different cultural practices among races?
+
+Furthermore, it is important to look into some of the predictors of cancer. Does having one type of cancer make you more susceptible to developing another type of cancer in the future? What is the likelihood of recurrence and metastasis among some of the more common cancers? These are a few of the questions that need to be answered in order to make meaningful progress in the fight against cancer.
+
+My family and I were lucky to have won our fight against cancer. However, there are countless others that are relying on research as they fight cancer. We must continue striving for a cure, so that they too can win their fights against cancer!
+
+#Data
+The data that will be used for this project is from the CDC's National Center for Health Statistics, specifically their dataset from [Health, United States, 2016](https://www.cdc.gov/nchs/data/hus/hus16.pdf). Specific data tables from Health, United States 2016 can be found [here](https://www.cdc.gov/nchs/hus/contents2016.htm). This data set will be used to visualize relationships between different types of cancer and its prevalence among different races. It contains variables on yearly cancer incidences among different races from 1990 to 2013.
+
+Further data will be drawn from the [National Cancer Institute](https://seer.cancer.gov/csr/1975_2014/browse_csr.php?sectionSEL=2&pageSEL=sect_02_table.12.html), which will allow for us to visualize the risk of being diagnosed with cancer across races in addition to visualizing survivability across races once diagnosed with cancer. This dataset contains variables for race, age, risk of being diagnosed with cancer over time, and a risk of dying from cancer.
+
+Additionally, data will be drawn from a study performed by [Wu et. al](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5222631/) in order to gain more insight on recurrence and metastasis in Breast Cancer. This dataset contains variables that involve different sites of recurrence in addition to sites of metastasis. Furthermore, this dataset contains percentages of recurrence and metastasis at different sites based on different molecluar subtypes of Breast Cancer.
+
+Finally, we intend to use another data set to examine the survivability rates of cancer. This data set comes from the [National Cancer Institute's US Surveillance, Epidemiology, and End Results (SEER) Program](https://seer.cancer.gov/archive/publications/survival/seer_survival_mono_highres.pdf). The data is collected from 12 designated regions across the US.  A total of 1,629,955 cancer cases from 1988-2001 were examined.   The SEER Program collects data on variables such as cancer type, race, age, gender, survival rates after diagnosis, aggressiveness of tumors, etc.  The dataset we will use looks at 1-year, 2-year, 3-year, 5-year, 8-year, and 10-year survival rates of various cancers, as percentages of the cancer population.  Some of the cancer types also include median survival time in months.  
+
+With these datasets, it is hoped that we can begin to answer some questions that will ultimately contribute to answering the questions posed above. Hopefully, by answering these questions, it'll be possible to gain a more profound understanding of what we're up against in this fight. In knowing these cancer trends, we will be able to better target research towards finding cures for each different type of cancer.
+
+#Design
+This project will incorporate several different visualizations in order to answer our questions of interest:
+
+Firstly, we will employ a Line Graph. This first visualization begins to address the question of whether or not there is a link between race and cancer development.  We intend to begin with a broad picture line graph that displays the number of new cancer cases per 100,000 people each year based on race.  
+
+Secondly, we will break this down with stacked bar plots. Each bar will represent a specific type of cancer, based on location in the body, and it will be broken up by proportion of incidence among each race.  This should allow us to see if race makes a person more susceptible to specific types of cancers.
+
+Then, in order to examine the question of survivability from cancer, we will create side-by-side boxplots that display the average survival rate for each type of cancer. The X-Axis will correspond to cancer type, and the Y-Axis will correspond to the average time survived after the initial cancer diagnosis.
+
+We will then use a modified Sankey diagram in order to display cancer recurrence. Node 1 will be represented by initial cancer type (breast, lung, etc.). Node 2 will be "Yes" or "No", meaning people either had a cancer recurrence after initial diagnosis, or they did not.  So a proportion of each of the Node 1 populations will flow to either "Yes" or "No".  Node 3 will be "Local" or "Other Location" recurrence.
+
+Finally, our Shiny application will be a non-traditional scatterplot where the user has the ability to visualize a person's risk for developing cancer within a certain time frame from their current age. This application will allow users to specify the time frame that they wish to visualize in addition to choosing data from specific races.
+
+#Line Graph Data Preparation
+```{r initial_data_prep}
+#Load in necessary libraries
+library(tidyverse)
+library(forcats)
+library(stringr)
+
+#Load in Dataset
+incidence_data <- read.csv("CancerIncidencesAllSites.csv")
+
+#Alter Column Name
+names(incidence_data)[1] <- "Demographics"
+
+#Gathering Data
+gathered_incidence_data <- gather(incidence_data, -Demographics, key = year, value = incidence)
+
+#Remove X before year
+gathered_incidence_data$year <- str_sub(gathered_incidence_data$year, 2,5)
+
+#Recode Categories
+gathered_incidence_data <- mutate(gathered_incidence_data, Demographics = fct_recode(Demographics,
+                                 "All Persons" = "All persons...........................",
+                                 "Asian or Pacific Islander" = "  Asian or Pacific Islander...........",
+                                 "Black or African American" = "  Black or African American...........",
+                                 "Hispanic or Latino" = "  Hispanic or Latino4................",
+                                 "White (Not Hispanic or Latino)" = "  White, not Hispanic or Latino4.....",
+                                 "White" = "  White...............................",
+                                 "American Indian or Alaskan Native" = "  American Indian or Alaska Native3.."))
+
+#Save Prepped Dataset
+save(gathered_incidence_data, file = "CancerIncidence.RData")
+```
+
+#Cancer Incidence by Race Line Graph
+Among all races, there has been an overall decline in new cancer cases per year.  The highest incidence occurs among people of Black/African American race.  In recent years, people of White and Black/African American race have had nearly the same amount of cancer incidence.  The lowest cancer incidence is seen among people Asian/Pacific Islander descent.
+```{r initial_data_visualization}
+ggplot(gathered_incidence_data, aes(x = year))+
+  geom_line(aes(y = incidence, group = Demographics, color = Demographics, linetype = Demographics, size = Demographics))+
+  scale_linetype_manual(values = c("solid", "solid", "solid", "solid", "solid", "solid", "longdash"))+
+  scale_size_manual(values = c(.1,.1,.1,.1,.1,.1,1))+
+  labs(x = "Year", y = "Cancer Incidence\n(New Cases per 100,000 People)", title = "Incidence of All Cancer Types by Race 
+       from 1990 to 2013")+
+  theme_classic()+
+  scale_x_discrete(breaks = c("1990", "1995", "2000", "2005", "2010", "2013"))
+```
+
+#Incidence Among Race and Gender Stacked Bar Plot
+Lung cancer incidence is most prevelant in Black or African American Men.  At the same time among women, lung cancer occurs most frequently in those who identify as White.  On the contrary, Asian women have very low lung cancer incidence.  Breast cancer appears to occur equally among women of White, White (non-hispanic), and African American race.  Finally, African American men and women suffer from the greatest amount of pancreatic cancer, compared to men and women of other races.  
+```{r StackedBarPlot}
+lungMale<- read.csv("lungMale.csv")
+
+NewlungMale<-gather(lungMale,key="year",value="incidence",-race)
+NewlungMale$year <- str_sub(NewlungMale$year, 2,5)
+
+NewlungMale <- mutate(NewlungMale, race = fct_recode(race,
+                                 "Asian or Pacific Islander" = "  Asian or Pacific Islander...........",
+                                 "Black or African American" = "  Black or African American...........",
+                                 "Hispanic or Latino" = "  Hispanic or Latino4................",
+                                 "White (Not Hispanic or Latino)" = "  White, not Hispanic or Latino4.....",
+                                 "White" = "  White...............................",
+                                 "American Indian or Alaskan Native" = "  American Indian or Alaska Native3.."))
+
+names(NewlungMale)[1] <- "Race"
+
+ggplot(NewlungMale,aes(x=year,y=incidence,fill=Race))+geom_bar(stat = "identity")+labs(title="Lung Cancer Incidence Among Males by Race", x = "Year",y = "Incidence" )+scale_y_continuous(limits = c(0,600))+
+  scale_x_discrete(breaks = c("1990", "1995", "2000", "2005", "2010", "2013"))
+
+lungFemale<- read.csv("lungFemale.csv")
+
+NewlungFemale<-gather(lungFemale,key="year",value="incidence",-race)
+NewlungFemale$year <- str_sub(NewlungFemale$year, 2,5)
+
+names(NewlungFemale)[1] <- "Race"
+
+ggplot(NewlungFemale,aes(x=year,y=incidence,fill=Race))+geom_bar(stat = "identity")+labs(title="Lung Cancer Incidence Among Females by Race", x = "Year", y = "Incidence")+scale_y_continuous(limits = c(0,600))+
+  scale_x_discrete(breaks = c("1990", "1995", "2000", "2005", "2010", "2013"))
+
+breast<- read.csv("breast.csv")
+
+Newbreast<-gather(breast,key="year",value="incidence",-race)
+Newbreast$year <- str_sub(Newbreast$year, 2,5)
+
+names(Newbreast)[1] <- "Race"
+
+ggplot(Newbreast,aes(x=year,y=incidence,fill=Race))+geom_bar(stat = "identity")+labs(title="Breast Cancer Incidence Among Females by Race", x = "Year", y = "Incidence")+
+  scale_x_discrete(breaks = c("1990", "1995", "2000", "2005", "2010", "2013"))
+
+PancreasMale<- read.csv("PancreasMale.csv")
+
+NewPancreasM<-gather(PancreasMale,key="year",value="incidence",-race)
+NewPancreasM$year <- str_sub(NewPancreasM$year, 2,5)
+
+names(NewPancreasM)[1] <- "Race"
+
+ggplot(NewPancreasM,aes(x=year,y=incidence,fill=Race))+geom_bar(stat = "identity")+labs(title="Pancreatic Cancer Incidence Among Males by Race", x = "Year", y = "Incidence")+scale_y_continuous(limits = c(0,80))+
+  scale_x_discrete(breaks = c("1990", "1995", "2000", "2005", "2010", "2013"))
+
+PancreasFemale<- read.csv("PancreasFemale.csv")
+
+NewPancreasF<-gather(PancreasFemale,key="year",value="incidence",-race)
+NewPancreasF$year <- str_sub(NewPancreasF$year, 2,5)
+
+names(NewPancreasF)[1] <- "Race"
+
+ggplot(NewPancreasF,aes(x=year,y=incidence,fill=Race))+geom_bar(stat = "identity")+labs(title="Pancreatic Cancer Incidence Among Females by Race", x = "Year", y = "Incidence")+scale_y_continuous(limits = c(0,80))+
+  scale_x_discrete(breaks = c("1990", "1995", "2000", "2005", "2010", "2013"))
+```
+
+
+#Survivability of Various Cancers Line Graph
+With the exception of Thyroid, most cancers see the steepest drop in survival rate between 0-2.5 years. After that, survivability tends to level off.  It is strikingly clear that cancer type plays a huge role in the survival chances a person has upon diagnosis.
+```{r SurvivabilityDiagram}
+#Load in Dataset
+survivability_data <- read.csv("SurvivalRateData.csv")
+
+#Alter Column Name
+names(survivability_data)[1] <- "Cancer"
+names(survivability_data)[2] <- "Median Survival Months"
+names(survivability_data)[3] <- "1"
+names(survivability_data)[4] <- "2"
+names(survivability_data)[5] <- "3"
+names(survivability_data)[6] <- "5"
+names(survivability_data)[7] <- "8"
+names(survivability_data)[8] <- "10"
+
+#Subset Data
+survive<-survivability_data[-c(1, 2, 3, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 21, 23, 24, 25, 26, 27, 28), ] 
+survive <- subset(survive, select = -c(2))
+
+survive_2<-gather(survive, key="Years", value="Survival Rate", -Cancer)
+
+#Survivability Line Graph
+ggplot(survive_2, aes(x = as.numeric(Years)))+
+  geom_line(aes(y = `Survival Rate`, group = Cancer, color = Cancer))+
+  labs(x = "Years Survived", y = "Survival Rate (%)", title = "Average Survivability of Various Cancers after Initial Diagnosis")+
+  theme_classic()
+```
+
+#Survivability of Breast Cancer Bar Graph
+The stage of breast cancer at initial diagnosis appears to influence average 5 year survival rate.  Those with Stage 1 have a near 100% 5-year survival rate, which greatly contrasts with Stage IV sufferers who have less than a 25% 5-year survival rate.  Each successive stage is associated with a drop in 5-year survivability.
+```{r SurvivalBreast}
+#Load in Dataset
+breast_survival <- read.csv("BreastCancerSurvivability.csv")
+
+#Alter Column Name
+names(breast_survival)[1] <- "Stage"
+names(breast_survival)[2] <- "5 Year Survival Rate"
+
+#Gather
+breast_2<-gather(breast_survival, key="Year", value="Survival Rate", -Stage)
+
+#Survivability Bar Plot
+ggplot(breast_2)+
+  geom_bar(aes(x=Stage, y=`Survival Rate`, fill=Stage),stat="identity",position="dodge")+
+  labs(title="Average 5-Year Survival Rate of Breast Cancer 
+       Patients Based on Stage of Cancer 
+       at Initial Diagnosis")
+```
+
+#Breast Cancer Recurrence/Metastasis Sankey Diagram
+In the context of breast cancer, it would appear that there are trends in recurrence, dependent upon the type of breast cancer at initial diagnosis.  TN and LA are the most frequently occurring types of breast cancer.  Also, about 75% of breast cancer recurrence occurs at a site outside of the breast.  A majority of type TN breast cancer recurs at sites outside of the breast.  Almost half of breast cancer that metastasizes to the lungs and brain started as type TN.  Similarly, a majority of type LA breast cancer recurs at sites outside of the breast.  Nearly half of breast cancer that metastasizes to the bones started as type LA.  When breast cancer recurs at another site within the breast, it most commonly happens in the chest wall and internal mammary nodes.  Once again, TN recurs at sites in the breast most frequently compared to the other 3 types of cancers.  
+```{r SankeyDiagram}
+library(tidyverse)
+library(ggalluvial)
+library(forcats)
+
+breast_recurrence<-read.csv("RecurrenceData.csv")
+breast_recurrence$Breast <- trimws(breast_recurrence$Breast)
+breast_recurrence$Breast <- as.factor(breast_recurrence$Breast)
+names(breast_recurrence)[1] <- "Type"
+freq_data <- summarize(group_by(breast_recurrence,Type, Breast, Site),freq=n())
+
+freq_data <- mutate(freq_data, Site = fct_relevel(Site, "Bone", "Lung" ,"Brain", "Liver", "Others", "Breast","Chest wall","Internal mammary nodes","Ipsilateral lymph nodes"))
+
+levels(freq_data$Site)[levels(freq_data$Site)=="Internal mammary nodes"] <- "IMN"
+levels(freq_data$Site)[levels(freq_data$Site)=="Ipsilateral lymph nodes"] <- "ILN"
+levels(freq_data$Site)[levels(freq_data$Site)=="Chest wall"] <- "Chest"
+
+ggplot(freq_data,aes(weight=freq,axis1=Type,axis2=Breast,axis3=Site))+
+  geom_alluvium(aes(fill=Type))+
+  geom_stratum()+
+  geom_label(stat="stratum",label.strata=TRUE)+
+  scale_x_continuous(breaks=c(1,2,3),labels=c("Type","Recurrence in Breast?", "Site of Recurrence"))+
+  theme_classic()
+```
