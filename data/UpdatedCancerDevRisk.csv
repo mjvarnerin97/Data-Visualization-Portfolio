@@ -1,0 +1,55 @@
+Race,Current Age,Diagnosis 10+Yrs,Diagnosis 20+Yrs,Diagnosis 30+Yrs,Diagnosis Eventually
+All Races,0,0.17,0.36,0.82,38.53
+All Races,10,0.19,0.65,1.74,38.83
+All Races,20,0.47,1.56,4.13,38.82
+All Races,30,1.11,3.71,9.42,38.84
+All Races,40,2.66,8.49,18.46,38.56
+All Races,50,6.12,16.55,28.16,37.61
+All Races,60,11.59,24.47,32.74,34.96
+All Races,70,15.84,26,-,28.74
+All Races,80,15.05,-,-,19.1
+White,0,0.18,0.38,0.88,38.71
+White,10,0.2,0.7,1.84,38.96
+White,20,0.51,1.65,4.24,38.94
+White,30,1.16,3.78,9.48,38.93
+White,40,2.69,8.51,18.5,38.62
+White,50,6.1,16.57,28.33,37.65
+White,60,11.61,24.67,32.92,35
+White,70,16.04,26.18,-,28.74
+White,80,15.11,-,-,18.92
+Black,0,0.14,0.28,0.58,35.69
+Black,10,0.14,0.45,1.37,36.29
+Black,20,0.32,1.24,3.81,36.35
+Black,30,0.94,3.54,9.98,36.59
+Black,40,2.68,9.29,19.94,36.61
+Black,50,7,18.28,28.59,35.94
+Black,60,12.97,24.82,31.33,33.27
+Black,70,15.59,24.14,-,26.69
+Black,80,13.58,-,-,17.63
+Asian/Pacific Islander,0,0.15,0.3,0.62,33.57
+Asian/Pacific Islander,10,0.15,0.47,1.31,33.71
+Asian/Pacific Islander,20,0.32,1.16,3.25,33.65
+Asian/Pacific Islander,30,0.85,2.95,7,33.55
+Asian/Pacific Islander,40,2.13,6.23,13.29,33.11
+Asian/Pacific Islander,50,4.22,11.49,20.59,31.91
+Asian/Pacific Islander,60,7.73,17.39,25.65,29.42
+Asian/Pacific Islander,70,10.91,20.22,-,24.48
+Asian/Pacific Islander,80,11.79,-,-,17.17
+American Indian/Alaska Native,0,0.12,0.24,0.56,27.74
+American Indian/Alaska Native,10,0.12,0.44,1.2,27.93
+American Indian/Alaska Native,20,0.32,1.09,2.66,27.97
+American Indian/Alaska Native,30,0.78,2.38,6.24,28.18
+American Indian/Alaska Native,40,1.65,5.64,12.41,28.26
+American Indian/Alaska Native,50,4.2,11.35,19.53,28.08
+American Indian/Alaska Native,60,7.9,16.93,23.87,26.37
+American Indian/Alaska Native,70,10.83,19.17,-,22.17
+American Indian/Alaska Native,80,11.83,-,-,16.09
+Hispanic,0,0.16,0.33,0.72,35.29
+Hispanic,10,0.18,0.57,1.44,35.5
+Hispanic,20,0.39,1.27,3.22,35.47
+Hispanic,30,0.88,2.85,7.3,35.43
+Hispanic,40,2,6.52,14.72,35.11
+Hispanic,50,4.67,13.15,23.47,34.24
+Hispanic,60,9.17,20.33,28.68,31.98
+Hispanic,70,13.1,22.91,-,26.79
+Hispanic,80,13.38,-,-,18.68

@@ -1,0 +1,173 @@
+Type,Breast,Site
+LA,Yes,Breast
+LA,Yes,Breast
+LA,Yes,Breast
+LA,Yes,Breast
+LA,Yes,Breast
+LA,Yes,Chest wall
+LA,Yes,Chest wall
+LA,Yes,Chest wall
+LA,Yes,Chest wall
+LA,Yes,Chest wall
+LA,Yes,Ipsilateral lymph nodes
+LA,Yes,Internal mammary nodes
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Bone
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Lung
+LA,No,Brain
+LA,No,Liver
+LA,No,Liver
+LA,No,Liver
+LA,No,Liver
+LA,No,Others
+LA,No,Others
+LB,Yes,Breast
+LB,Yes,Breast
+LB,Yes,Chest wall
+LB,Yes,Chest wall
+LB,Yes,Chest wall
+LB,Yes,Ipsilateral lymph nodes
+LB,No,Bone
+LB,No,Bone
+LB,No,Bone
+LB,No,Bone
+LB,No,Bone
+LB,No,Bone
+LB,No,Bone
+LB,No,Bone
+LB,No,Bone
+LB,No,Lung
+LB,No,Lung
+LB,No,Lung
+LB,No,Lung
+LB,No,Lung
+LB,No,Lung
+LB,No,Lung
+LB,No,Lung
+LB,No,Brain
+LB,No,Brain
+LB,No,Brain
+LB,No,Liver
+HER2,Yes,Breast
+HER2,Yes,Breast
+HER2,Yes,Breast
+HER2,Yes,Breast
+HER2,Yes,Breast
+HER2,Yes,Chest wall
+HER2,Yes,Chest wall
+HER2,Yes,Chest wall
+HER2,Yes,Ipsilateral lymph nodes
+HER2,Yes,Ipsilateral lymph nodes
+HER2,No,Bone
+HER2,No,Bone
+HER2,No,Bone
+HER2,No,Bone
+HER2,No,Bone
+HER2,No,Bone
+HER2,No,Bone
+HER2,No,Bone
+HER2,No,Bone
+HER2,No ,Lung
+HER2,No,Lung
+HER2,No,Lung
+HER2,No ,Lung
+HER2,No,Lung
+HER2,No,Lung
+HER2,No ,Lung
+HER2,No,Lung
+HER2,No,Brain
+HER2,No ,Brain
+HER2,No,Brain
+HER2,No,Brain
+HER2,No ,Brain
+HER2,No,Liver
+HER2,No,Liver
+HER2,No ,Others
+TN,Yes,Breast
+TN,Yes,Breast
+TN,Yes,Chest wall
+TN,Yes,Chest wall
+TN,Yes,Chest wall
+TN,Yes,Chest wall
+TN,Yes,Chest wall
+TN,Yes,Chest wall
+TN,Yes,Chest wall
+TN,Yes,Ipsilateral lymph nodes
+TN,Yes,Ipsilateral lymph nodes
+TN,Yes,Ipsilateral lymph nodes
+TN,Yes,Ipsilateral lymph nodes
+TN,Yes,Ipsilateral lymph nodes
+TN,Yes,Ipsilateral lymph nodes
+TN,Yes,Ipsilateral lymph nodes
+TN,Yes,Ipsilateral lymph nodes
+TN,Yes,Internal mammary nodes
+TN,No,Bone
+TN,No,Bone
+TN,No,Bone
+TN,No,Bone
+TN,No,Bone
+TN,No,Bone
+TN,No,Bone
+TN,No,Bone
+TN,No,Bone
+TN,No,Bone
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Lung
+TN,No,Brain
+TN,No,Brain
+TN,No,Brain
+TN,No,Brain
+TN,No,Brain
+TN,No,Brain
+TN,No,Brain
+TN,No,Liver
+TN,No,Liver
+TN,No,Liver
+TN,No,Others
+TN,No,Others
+TN,No,Others

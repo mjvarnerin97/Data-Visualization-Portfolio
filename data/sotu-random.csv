@@ -1,0 +1,601 @@
+time,topic,count
+1,Education,67
+2,Education,58
+3,Education,49
+4,Education,39
+5,Education,30
+6,Education,21
+7,Education,12
+8,Education,3
+9,Education,6
+10,Education,15
+11,Education,25
+12,Education,34
+13,Education,43
+14,Education,52
+15,Education,61
+16,Education,71
+17,Education,80
+18,Education,89
+19,Education,98
+20,Education,107
+21,Education,116
+22,Education,125
+23,Education,135
+24,Education,144
+25,Education,153
+26,Education,162
+27,Education,171
+28,Education,180
+29,Education,189
+30,Education,198
+31,Education,207
+32,Education,216
+33,Education,226
+34,Education,235
+35,Education,244
+36,Education,253
+37,Education,262
+38,Education,271
+39,Education,280
+40,Education,289
+41,Education,298
+42,Education,306
+43,Education,314
+44,Education,322
+45,Education,329
+46,Education,336
+47,Education,343
+48,Education,348
+49,Education,353
+50,Education,357
+51,Education,360
+52,Education,362
+53,Education,363
+54,Education,363
+55,Education,362
+56,Education,361
+57,Education,359
+58,Education,356
+59,Education,353
+60,Education,350
+61,Education,346
+62,Education,342
+63,Education,337
+64,Education,332
+65,Education,327
+66,Education,322
+67,Education,316
+68,Education,311
+69,Education,302
+70,Education,293
+71,Education,284
+72,Education,275
+73,Education,267
+74,Education,258
+75,Education,249
+76,Education,240
+77,Education,232
+78,Education,223
+79,Education,214
+80,Education,205
+81,Education,196
+82,Education,187
+83,Education,178
+84,Education,169
+85,Education,160
+86,Education,151
+87,Education,141
+88,Education,132
+89,Education,122
+90,Education,113
+91,Education,103
+92,Education,94
+93,Education,84
+94,Education,74
+95,Education,64
+96,Education,55
+97,Education,45
+98,Education,35
+99,Education,25
+100,Education,15
+1,Jobs,5
+2,Jobs,13
+3,Jobs,21
+4,Jobs,28
+5,Jobs,36
+6,Jobs,44
+7,Jobs,52
+8,Jobs,59
+9,Jobs,67
+10,Jobs,75
+11,Jobs,82
+12,Jobs,90
+13,Jobs,97
+14,Jobs,105
+15,Jobs,112
+16,Jobs,120
+17,Jobs,127
+18,Jobs,134
+19,Jobs,142
+20,Jobs,149
+21,Jobs,156
+22,Jobs,163
+23,Jobs,170
+24,Jobs,177
+25,Jobs,184
+26,Jobs,192
+27,Jobs,199
+28,Jobs,206
+29,Jobs,213
+30,Jobs,220
+31,Jobs,227
+32,Jobs,235
+33,Jobs,242
+34,Jobs,247
+35,Jobs,253
+36,Jobs,258
+37,Jobs,263
+38,Jobs,268
+39,Jobs,273
+40,Jobs,278
+41,Jobs,283
+42,Jobs,288
+43,Jobs,293
+44,Jobs,297
+45,Jobs,301
+46,Jobs,305
+47,Jobs,308
+48,Jobs,311
+49,Jobs,313
+50,Jobs,314
+51,Jobs,314
+52,Jobs,312
+53,Jobs,310
+54,Jobs,307
+55,Jobs,303
+56,Jobs,298
+57,Jobs,293
+58,Jobs,288
+59,Jobs,282
+60,Jobs,276
+61,Jobs,270
+62,Jobs,263
+63,Jobs,256
+64,Jobs,250
+65,Jobs,243
+66,Jobs,236
+67,Jobs,229
+68,Jobs,222
+69,Jobs,214
+70,Jobs,206
+71,Jobs,198
+72,Jobs,190
+73,Jobs,183
+74,Jobs,175
+75,Jobs,167
+76,Jobs,159
+77,Jobs,152
+78,Jobs,144
+79,Jobs,136
+80,Jobs,128
+81,Jobs,121
+82,Jobs,113
+83,Jobs,105
+84,Jobs,97
+85,Jobs,89
+86,Jobs,81
+87,Jobs,73
+88,Jobs,65
+89,Jobs,57
+90,Jobs,49
+91,Jobs,41
+92,Jobs,32
+93,Jobs,24
+94,Jobs,16
+95,Jobs,8
+96,Jobs,0
+97,Jobs,8
+98,Jobs,16
+99,Jobs,25
+100,Jobs,33
+1,Energy,0
+2,Energy,0
+3,Energy,0
+4,Energy,0
+5,Energy,0
+6,Energy,0
+7,Energy,0
+8,Energy,0
+9,Energy,0
+10,Energy,0
+11,Energy,0
+12,Energy,0
+13,Energy,0
+14,Energy,0
+15,Energy,0
+16,Energy,0
+17,Energy,0
+18,Energy,0
+19,Energy,0
+20,Energy,0
+21,Energy,157
+22,Energy,172
+23,Energy,186
+24,Energy,201
+25,Energy,215
+26,Energy,230
+27,Energy,244
+28,Energy,258
+29,Energy,272
+30,Energy,285
+31,Energy,299
+32,Energy,313
+33,Energy,327
+34,Energy,340
+35,Energy,354
+36,Energy,368
+37,Energy,381
+38,Energy,394
+39,Energy,407
+40,Energy,420
+41,Energy,429
+42,Energy,437
+43,Energy,444
+44,Energy,450
+45,Energy,455
+46,Energy,459
+47,Energy,462
+48,Energy,465
+49,Energy,467
+50,Energy,468
+51,Energy,469
+52,Energy,469
+53,Energy,468
+54,Energy,467
+55,Energy,465
+56,Energy,461
+57,Energy,457
+58,Energy,451
+59,Energy,444
+60,Energy,435
+61,Energy,426
+62,Energy,415
+63,Energy,399
+64,Energy,383
+65,Energy,367
+66,Energy,351
+67,Energy,335
+68,Energy,318
+69,Energy,302
+70,Energy,285
+71,Energy,268
+72,Energy,251
+73,Energy,235
+74,Energy,218
+75,Energy,200
+76,Energy,183
+77,Energy,166
+78,Energy,148
+79,Energy,130
+80,Energy,112
+81,Energy,94
+82,Energy,0
+83,Energy,0
+84,Energy,0
+85,Energy,0
+86,Energy,0
+87,Energy,0
+88,Energy,0
+89,Energy,0
+90,Energy,0
+91,Energy,0
+92,Energy,0
+93,Energy,0
+94,Energy,0
+95,Energy,0
+96,Energy,0
+97,Energy,0
+98,Energy,0
+99,Energy,0
+100,Energy,0
+1,Economy,104
+2,Economy,86
+3,Economy,67
+4,Economy,48
+5,Economy,30
+6,Economy,11
+7,Economy,8
+8,Economy,27
+9,Economy,46
+10,Economy,64
+11,Economy,83
+12,Economy,102
+13,Economy,121
+14,Economy,140
+15,Economy,159
+16,Economy,178
+17,Economy,197
+18,Economy,215
+19,Economy,234
+20,Economy,253
+21,Economy,272
+22,Economy,290
+23,Economy,309
+24,Economy,327
+25,Economy,346
+26,Economy,364
+27,Economy,383
+28,Economy,401
+29,Economy,420
+30,Economy,438
+31,Economy,457
+32,Economy,476
+33,Economy,495
+34,Economy,512
+35,Economy,529
+36,Economy,545
+37,Economy,560
+38,Economy,575
+39,Economy,589
+40,Economy,602
+41,Economy,615
+42,Economy,626
+43,Economy,637
+44,Economy,647
+45,Economy,655
+46,Economy,662
+47,Economy,669
+48,Economy,673
+49,Economy,677
+50,Economy,679
+51,Economy,679
+52,Economy,678
+53,Economy,676
+54,Economy,673
+55,Economy,668
+56,Economy,663
+57,Economy,656
+58,Economy,648
+59,Economy,639
+60,Economy,629
+61,Economy,618
+62,Economy,606
+63,Economy,593
+64,Economy,580
+65,Economy,565
+66,Economy,550
+67,Economy,535
+68,Economy,518
+69,Economy,498
+70,Economy,479
+71,Economy,459
+72,Economy,440
+73,Economy,421
+74,Economy,401
+75,Economy,382
+76,Economy,363
+77,Economy,343
+78,Economy,324
+79,Economy,304
+80,Economy,285
+81,Economy,265
+82,Economy,245
+83,Economy,226
+84,Economy,206
+85,Economy,186
+86,Economy,166
+87,Economy,146
+88,Economy,126
+89,Economy,106
+90,Economy,86
+91,Economy,65
+92,Economy,45
+93,Economy,25
+94,Economy,5
+95,Economy,15
+96,Economy,35
+97,Economy,55
+98,Economy,75
+99,Economy,95
+100,Economy,115
+1,Foreign Policy,33
+2,Foreign Policy,40
+3,Foreign Policy,46
+4,Foreign Policy,52
+5,Foreign Policy,59
+6,Foreign Policy,65
+7,Foreign Policy,71
+8,Foreign Policy,77
+9,Foreign Policy,83
+10,Foreign Policy,89
+11,Foreign Policy,95
+12,Foreign Policy,101
+13,Foreign Policy,107
+14,Foreign Policy,113
+15,Foreign Policy,118
+16,Foreign Policy,124
+17,Foreign Policy,129
+18,Foreign Policy,135
+19,Foreign Policy,140
+20,Foreign Policy,146
+21,Foreign Policy,151
+22,Foreign Policy,156
+23,Foreign Policy,161
+24,Foreign Policy,166
+25,Foreign Policy,171
+26,Foreign Policy,176
+27,Foreign Policy,181
+28,Foreign Policy,186
+29,Foreign Policy,191
+30,Foreign Policy,196
+31,Foreign Policy,201
+32,Foreign Policy,206
+33,Foreign Policy,211
+34,Foreign Policy,213
+35,Foreign Policy,215
+36,Foreign Policy,217
+37,Foreign Policy,219
+38,Foreign Policy,221
+39,Foreign Policy,222
+40,Foreign Policy,224
+41,Foreign Policy,226
+42,Foreign Policy,227
+43,Foreign Policy,228
+44,Foreign Policy,229
+45,Foreign Policy,229
+46,Foreign Policy,230
+47,Foreign Policy,230
+48,Foreign Policy,229
+49,Foreign Policy,229
+50,Foreign Policy,228
+51,Foreign Policy,227
+52,Foreign Policy,226
+53,Foreign Policy,224
+54,Foreign Policy,223
+55,Foreign Policy,221
+56,Foreign Policy,219
+57,Foreign Policy,217
+58,Foreign Policy,215
+59,Foreign Policy,213
+60,Foreign Policy,210
+61,Foreign Policy,207
+62,Foreign Policy,204
+63,Foreign Policy,202
+64,Foreign Policy,199
+65,Foreign Policy,196
+66,Foreign Policy,193
+67,Foreign Policy,190
+68,Foreign Policy,187
+69,Foreign Policy,182
+70,Foreign Policy,178
+71,Foreign Policy,174
+72,Foreign Policy,169
+73,Foreign Policy,165
+74,Foreign Policy,160
+75,Foreign Policy,156
+76,Foreign Policy,151
+77,Foreign Policy,147
+78,Foreign Policy,142
+79,Foreign Policy,138
+80,Foreign Policy,133
+81,Foreign Policy,128
+82,Foreign Policy,124
+83,Foreign Policy,119
+84,Foreign Policy,114
+85,Foreign Policy,109
+86,Foreign Policy,104
+87,Foreign Policy,99
+88,Foreign Policy,94
+89,Foreign Policy,89
+90,Foreign Policy,84
+91,Foreign Policy,79
+92,Foreign Policy,73
+93,Foreign Policy,68
+94,Foreign Policy,63
+95,Foreign Policy,57
+96,Foreign Policy,52
+97,Foreign Policy,46
+98,Foreign Policy,41
+99,Foreign Policy,35
+100,Foreign Policy,29
+1,Fairness,0
+2,Fairness,0
+3,Fairness,0
+4,Fairness,0
+5,Fairness,0
+6,Fairness,0
+7,Fairness,0
+8,Fairness,0
+9,Fairness,0
+10,Fairness,0
+11,Fairness,0
+12,Fairness,0
+13,Fairness,0
+14,Fairness,0
+15,Fairness,0
+16,Fairness,0
+17,Fairness,0
+18,Fairness,0
+19,Fairness,0
+20,Fairness,0
+21,Fairness,0
+22,Fairness,0
+23,Fairness,0
+24,Fairness,0
+25,Fairness,0
+26,Fairness,0
+27,Fairness,0
+28,Fairness,0
+29,Fairness,0
+30,Fairness,0
+31,Fairness,0
+32,Fairness,0
+33,Fairness,0
+34,Fairness,0
+35,Fairness,0
+36,Fairness,0
+37,Fairness,0
+38,Fairness,0
+39,Fairness,0
+40,Fairness,0
+41,Fairness,0
+42,Fairness,0
+43,Fairness,0
+44,Fairness,0
+45,Fairness,1
+46,Fairness,3
+47,Fairness,10
+48,Fairness,25
+49,Fairness,49
+50,Fairness,78
+51,Fairness,108
+52,Fairness,133
+53,Fairness,153
+54,Fairness,169
+55,Fairness,180
+56,Fairness,189
+57,Fairness,196
+58,Fairness,202
+59,Fairness,208
+60,Fairness,212
+61,Fairness,217
+62,Fairness,221
+63,Fairness,226
+64,Fairness,231
+65,Fairness,238
+66,Fairness,248
+67,Fairness,262
+68,Fairness,283
+69,Fairness,292
+70,Fairness,302
+71,Fairness,309
+72,Fairness,315
+73,Fairness,319
+74,Fairness,322
+75,Fairness,322
+76,Fairness,321
+77,Fairness,319
+78,Fairness,316
+79,Fairness,311
+80,Fairness,305
+81,Fairness,299
+82,Fairness,291
+83,Fairness,283
+84,Fairness,274
+85,Fairness,264
+86,Fairness,253
+87,Fairness,242
+88,Fairness,230
+89,Fairness,218
+90,Fairness,204
+91,Fairness,191
+92,Fairness,176
+93,Fairness,162
+94,Fairness,147
+95,Fairness,131
+96,Fairness,115
+97,Fairness,99
+98,Fairness,82
+99,Fairness,65
+100,Fairness,47
