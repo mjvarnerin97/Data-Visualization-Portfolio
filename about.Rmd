@@ -1,0 +1,9 @@
+---
+title: "About this Portfolio"
+---
+
+This portfolio highlights my work throughout this semester. From beginning to learn my way around R to being able to create full-fledged R Markdown assignments with multiple visualizations, my journey through this learning process is documented here.
+
+![https://visionhelp.files.wordpress.com/2013/02/point-a-to-point-b.png](https://visionhelp.files.wordpress.com/2013/02/point-a-to-point-b.png)
+
+It's been a fantastic opportunity to learn about coding in R, and I'm quite proud of the work that I was able to accomplish during my time in this class!
